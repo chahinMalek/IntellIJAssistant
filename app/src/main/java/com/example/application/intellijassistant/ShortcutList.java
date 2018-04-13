@@ -14,6 +14,24 @@ public class ShortcutList {
 
     private static ShortcutList shortcutList;
     private Heap<Shortcut> shortcutHeap;
+//    private Shortcut.ShortcutBuilder mShortcutBuilder;
+
+    private ShortcutList(Context context) {
+
+//        mShortcutBuilder = new Shortcut.ShortcutBuilder();
+        shortcutHeap = new Heap(Greater.class);
+
+        for(int i=0; i<100; i++) {
+//            shortcutHeap.add(mShortcutBuilder.description("Shortcut " + i+1).
+//                    favourite(i%2 == 0).
+//                    shortcut("CTRL + ALT + " + i+1).
+//                    create());
+
+            shortcutHeap.add(new Shortcut().description("Shortcut " + i+1).
+                    favourite(i%2 == 0).
+                    shortcut("CTRL + ALT + " + i+1));
+        }
+    }
 
     public static ShortcutList getShortcutList(Context context) {
 
@@ -25,9 +43,5 @@ public class ShortcutList {
 
     public Heap<Shortcut> getShortcutHeap() {
         return shortcutHeap;
-    }
-
-    private ShortcutList(Context context) {
-        shortcutHeap = new Heap(Greater.class);
     }
 }

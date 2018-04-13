@@ -12,40 +12,22 @@ public class Shortcut implements Comparable<Shortcut> {
     private String description;
     private boolean favourite;
 
-    static class ShortcutBuilder {
-
-        private String shortcut;
-        private String description;
-        private boolean favourite;
-
-        public ShortcutBuilder shortcut(String shortcut) {
-            this.shortcut = shortcut;
-            return this;
-        }
-
-        public ShortcutBuilder description(String description) {
-            this.description = description;
-            return this;
-        }
-
-        public ShortcutBuilder favourite(boolean favourite) {
-            this.favourite = favourite;
-            return this;
-        }
-
-        public Shortcut create() {
-            return new Shortcut(this);
-        }
+    public Shortcut() {
     }
 
-    private Shortcut() {
-
+    public Shortcut shortcut(String shortcut) {
+        this.shortcut = shortcut;
+        return this;
     }
 
-    public Shortcut(ShortcutBuilder shortcutBuilder) {
-        this.description = shortcutBuilder.description;
-        this.favourite = shortcutBuilder.favourite;
-        this.shortcut = shortcutBuilder.shortcut;
+    public Shortcut description(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public Shortcut favourite(boolean favourite) {
+        this.favourite = favourite;
+        return this;
     }
 
     public String getShortcut() {
@@ -58,11 +40,6 @@ public class Shortcut implements Comparable<Shortcut> {
 
     public boolean isFavourite() {
         return favourite;
-    }
-
-    @Override
-    public String toString() {
-        return shortcut + " " + description + " " + favourite;
     }
 
     @Override
