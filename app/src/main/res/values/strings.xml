@@ -4,8 +4,9 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="shortcut_description_label">Enter shortcut description</string>
-    <string name="shortcut_title_label">Shortcut</string>
+    <string name="shortcut_title_label">Add a New Shortcut</string>
     <string name="shortcut_title_hint">Enter shortcut here</string>
     <string name="shortcut_description_hint">Enter description here</string>
     <string name="shortcut_favourite_label">Favourite</string>
+    <string name="add_shortcut_text">Add</string>
 </resources>
