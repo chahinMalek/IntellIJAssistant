@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 
 /**
@@ -55,7 +54,7 @@ public class ShortcutFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mShortcut.shortcut(s.toString());
+                mShortcut.setShortcut(s.toString());
             }
 
             @Override
@@ -71,7 +70,7 @@ public class ShortcutFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mShortcut.description(s.toString());
+                mShortcut.setDescription(s.toString());
             }
 
             @Override
@@ -80,12 +79,8 @@ public class ShortcutFragment extends Fragment {
         });
 
         mShortcutFavouriteCheckBox = v.findViewById(R.id.shortcut_favourite);
-        mShortcutFavouriteCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mShortcut.favourite(isChecked);
-            }
-        });
+        mShortcutFavouriteCheckBox.setOnCheckedChangeListener((buttonView, isChecked) ->
+                mShortcut.setFavourite(isChecked));
 
         return v;
     }

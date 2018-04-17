@@ -1,5 +1,7 @@
 package com.example.application.intellijassistant;
 
+import java.util.UUID;
+
 /**
  * User: malek
  * Date: 4/10/2018
@@ -8,24 +10,36 @@ package com.example.application.intellijassistant;
 
 public class Shortcut implements Comparable<Shortcut> {
 
+    private UUID id;
     private String shortcut;
     private String description;
     private boolean favourite;
+    private int category;
 
     public Shortcut() {
+        id = UUID.randomUUID();
     }
 
-    public Shortcut shortcut(String shortcut) {
+    public void setCategory(int category) {
+        this.category = category;
+    }
+
+    public int getCategory() {
+        return this.category;
+    }
+
+    public Shortcut setShortcut(String shortcut) {
         this.shortcut = shortcut;
+        id = UUID.randomUUID();
         return this;
     }
 
-    public Shortcut description(String description) {
+    public Shortcut setDescription(String description) {
         this.description = description;
         return this;
     }
 
-    public Shortcut favourite(boolean favourite) {
+    public Shortcut setFavourite(boolean favourite) {
         this.favourite = favourite;
         return this;
     }

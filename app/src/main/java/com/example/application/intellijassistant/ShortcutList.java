@@ -13,29 +13,46 @@ import com.example.application.intellijassistant.Heap.Heap;
 
 public class ShortcutList {
 
-    private static ShortcutList shortcutList;
-    private Heap<Shortcut> shortcutHeap;
+    private static ShortcutList sShortcutList;
+    private Heap<Shortcut> mShortcutHeap;
 
     private ShortcutList(Context context) {
 
-        shortcutHeap = new Heap(Greater.class);
+        mShortcutHeap = new Heap(Greater.class);
 
         for(int i=0; i<100; i++) {
-            shortcutHeap.add(new Shortcut().description("Shortcut " + i+1).
-                    favourite(i%2 == 0).
-                    shortcut("CTRL + ALT + " + i+1));
+            mShortcutHeap.add(new Shortcut().setDescription("Shortcut " + i+1).
+                    setFavourite(i%2 == 0).
+                    setShortcut("CTRL + ALT + " + i+1));
         }
     }
 
     public static ShortcutList getShortcutList(Context context) {
 
-        if(shortcutList == null) {
-            shortcutList = new ShortcutList(context);
+        if(sShortcutList == null) {
+            sShortcutList = new ShortcutList(context);
         }
-        return shortcutList;
+        return sShortcutList;
     }
 
     public Heap<Shortcut> getShortcutHeap() {
-        return shortcutHeap;
+        return mShortcutHeap;
+    }
+
+    /**
+     * This way any category of shortcuts can be extracted
+     * @return Heap data structure containing favourite shortcuts
+     */
+    public Heap<Shortcut> getFavourites() {
+
+        Heap<Shortcut> favourites = new Heap(Greater.class);
+
+        for(int i=0; i<mShortcutHeap.getSize(); i++) {
+            if(mShortcutHeap.get(i).isFavourite()) {
+                favourites.add(mShortcutHeap.get(i));
+            }
+        }
+
+        return favourites;
     }
 }

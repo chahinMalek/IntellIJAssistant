@@ -89,6 +89,10 @@ public class Heap<T extends Comparable<T>> {
         } else return heap[upHeap(index)];
     }
 
+    public T get(int index) {
+        return heap[index];
+    }
+
     private int upHeap(int index) {
 
         if(index < 0 || index >= size) {
