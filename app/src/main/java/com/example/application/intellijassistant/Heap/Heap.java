@@ -6,20 +6,25 @@ package com.example.application.intellijassistant.Heap;
  * Time: 9:04 PM
  */
 
+
 public class Heap<T extends Comparable<T>> {
+
+    public enum Type {
+        GREATER, LESS
+    }
 
     private T[] heap;
     private int capacity;
     private int size;
     private boolean greater;
 
-    public Heap(Class<Comparison> comparison) {
+    public Heap() {
 
-        if(comparison.getSuperclass() != Comparison.class) {
-            throw new IllegalArgumentException();
-        }
+    }
 
-        if(comparison.equals(Greater.class)) {
+    public Heap(Type type) {
+
+        if(type == Type.GREATER) {
             greater = true;
         }
     }

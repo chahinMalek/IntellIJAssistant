@@ -1,5 +1,7 @@
 package com.example.application.intellijassistant;
 
+import android.support.annotation.Nullable;
+
 import java.util.UUID;
 
 /**
@@ -8,40 +10,72 @@ import java.util.UUID;
  * Time: 8:41 PM
  */
 
+enum Category {
+    EDITING, SEARCH, USAGE_SEARCH, COMPILE_RUN, DEBUGGING, NAVIGATION, REFACTORING,
+    VERSION_CONTROL, LIVE_TEMPLATES, GENERAL, OTHER
+}
+
 public class Shortcut implements Comparable<Shortcut> {
+
+    @Nullable
+    private String description;
 
     private UUID id;
     private String shortcut;
-    private String description;
     private boolean favourite;
-    private int category;
+    private Category category;
 
-    public Shortcut() {
-        id = UUID.randomUUID();
+    static class ShortcutBuilder {
+
+        private UUID id;
+        private String description;
+        private String shortcut;
+        private boolean favourite;
+        private Category category;
+
+        public ShortcutBuilder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public ShortcutBuilder shortcut(String shortcut) {
+            this.shortcut = shortcut;
+            return this;
+        }
+
+        public ShortcutBuilder favourite(boolean favourite) {
+            this.favourite = favourite;
+            return this;
+        }
+
+        public ShortcutBuilder category(Category category) {
+            this.category = category;
+            return this;
+        }
+
+        public Shortcut getShortcut() {
+
+            if(this.shortcut == null) {
+                throw new IllegalStateException("Shortcut title must be specified!");
+
+            } else if (this.category == null) {
+                this.category = Category.OTHER;
+            }
+
+            return new Shortcut(shortcut, description, favourite, category);
+        }
     }
 
-    public void setCategory(int category) {
-        this.category = category;
-    }
-
-    public int getCategory() {
-        return this.category;
-    }
-
-    public Shortcut setShortcut(String shortcut) {
+    private Shortcut(String shortcut, @Nullable String description, boolean favourite, Category category) {
+        this.id = UUID.randomUUID();
         this.shortcut = shortcut;
-        id = UUID.randomUUID();
-        return this;
-    }
-
-    public Shortcut setDescription(String description) {
         this.description = description;
-        return this;
+        this.favourite = favourite;
+        this.category = (category == null) ? Category.GENERAL : category;
     }
 
-    public Shortcut setFavourite(boolean favourite) {
-        this.favourite = favourite;
-        return this;
+    public Category getCategory() {
+        return category;
     }
 
     public String getShortcut() {
@@ -54,6 +88,10 @@ public class Shortcut implements Comparable<Shortcut> {
 
     public boolean isFavourite() {
         return favourite;
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     @Override

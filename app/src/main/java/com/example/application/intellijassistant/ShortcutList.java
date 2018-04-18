@@ -2,7 +2,6 @@ package com.example.application.intellijassistant;
 
 import android.content.Context;
 
-import com.example.application.intellijassistant.Heap.Greater;
 import com.example.application.intellijassistant.Heap.Heap;
 
 /**
@@ -18,12 +17,9 @@ public class ShortcutList {
 
     private ShortcutList(Context context) {
 
-        mShortcutHeap = new Heap(Greater.class);
-
+        mShortcutHeap = new Heap<>(Heap.Type.GREATER);
         for(int i=0; i<100; i++) {
-            mShortcutHeap.add(new Shortcut().setDescription("Shortcut " + i+1).
-                    setFavourite(i%2 == 0).
-                    setShortcut("CTRL + ALT + " + i+1));
+            mShortcutHeap.add(new Shortcut.ShortcutBuilder().shortcut("CTRL + ALT + UP").getShortcut());
         }
     }
 
@@ -45,7 +41,7 @@ public class ShortcutList {
      */
     public Heap<Shortcut> getFavourites() {
 
-        Heap<Shortcut> favourites = new Heap(Greater.class);
+        Heap<Shortcut> favourites = new Heap<>(Heap.Type.GREATER);
 
         for(int i=0; i<mShortcutHeap.getSize(); i++) {
             if(mShortcutHeap.get(i).isFavourite()) {

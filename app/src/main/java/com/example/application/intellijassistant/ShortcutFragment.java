@@ -10,12 +10,15 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import com.example.application.intellijassistant.Shortcut.ShortcutBuilder;
+
 /**
  * Created by malek on 4/12/2018.
  */
 
 public class ShortcutFragment extends Fragment {
 
+    private ShortcutBuilder mShortcutBuilder;
     private Shortcut mShortcut;
     private EditText mShortcutTitle;
     private EditText mShortcutDescription;
@@ -28,7 +31,7 @@ public class ShortcutFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mShortcut = new Shortcut();
+        mShortcutBuilder = new ShortcutBuilder();
     }
 
     /**
@@ -54,7 +57,7 @@ public class ShortcutFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mShortcut.setShortcut(s.toString());
+                mShortcutBuilder.shortcut(s.toString());
             }
 
             @Override
@@ -70,7 +73,7 @@ public class ShortcutFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mShortcut.setDescription(s.toString());
+                mShortcutBuilder.description(s.toString());
             }
 
             @Override
@@ -80,7 +83,7 @@ public class ShortcutFragment extends Fragment {
 
         mShortcutFavouriteCheckBox = v.findViewById(R.id.shortcut_favourite);
         mShortcutFavouriteCheckBox.setOnCheckedChangeListener((buttonView, isChecked) ->
-                mShortcut.setFavourite(isChecked));
+                mShortcutBuilder.favourite(isChecked));
 
         return v;
     }
