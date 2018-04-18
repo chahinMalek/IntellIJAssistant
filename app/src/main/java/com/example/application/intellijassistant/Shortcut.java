@@ -10,12 +10,12 @@ import java.util.UUID;
  * Time: 8:41 PM
  */
 
-enum Category {
-    EDITING, SEARCH, USAGE_SEARCH, COMPILE_RUN, DEBUGGING, NAVIGATION, REFACTORING,
-    VERSION_CONTROL, LIVE_TEMPLATES, GENERAL, OTHER
-}
-
 public class Shortcut implements Comparable<Shortcut> {
+
+    enum Category {
+        EDITING, SEARCH, USAGE_SEARCH, COMPILE_RUN, DEBUGGING, NAVIGATION, REFACTORING,
+        VERSION_CONTROL, LIVE_TEMPLATES, GENERAL, OTHER
+    }
 
     @Nullable
     private String description;
