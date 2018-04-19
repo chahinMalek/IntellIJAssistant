@@ -2,53 +2,52 @@ package com.example.application.intellijassistant;
 
 import android.content.Context;
 
-import com.example.application.intellijassistant.Heap.Heap;
+import com.example.application.intellijassistant.Shortcut.ShortcutBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 /**
- * User: malek
- * Date: 4/11/2018
- * Time: 11:03 PM
+ * Created by Said on 19/04/2018.
  */
 
 public class ShortcutList {
-
     private static ShortcutList sShortcutList;
-    private Heap<Shortcut> mShortcutHeap;
 
-    private ShortcutList(Context context) {
+    private List<Shortcut> mShortcuts;
+    private ShortcutBuilder mShortcutBuilder;
 
-        mShortcutHeap = new Heap<>(Heap.Type.GREATER);
-        for(int i=0; i<100; i++) {
-            mShortcutHeap.add(new Shortcut.ShortcutBuilder().shortcut("CTRL + ALT + UP").getShortcut());
-        }
-    }
-
-    public static ShortcutList getShortcutList(Context context) {
-
-        if(sShortcutList == null) {
+    public static ShortcutList get(Context context){
+        if (sShortcutList == null) {
             sShortcutList = new ShortcutList(context);
         }
+
         return sShortcutList;
     }
 
-    public Heap<Shortcut> getShortcutHeap() {
-        return mShortcutHeap;
+    private ShortcutList(Context context){
+        mShortcuts = new ArrayList<>();
+        mShortcutBuilder = new ShortcutBuilder();
+
+        for(int i = 1; i <= 100; i++){
+            mShortcuts.add(mShortcutBuilder.shortcut("Shortcut #" + i)
+                    .description("Description #" + i)
+                    .favourite(i % 2 == 0)
+                    .getShortcut());
+        }
     }
 
-    /**
-     * This way any category of shortcuts can be extracted
-     * @return Heap data structure containing favourite shortcuts
-     */
-    public Heap<Shortcut> getFavourites() {
+    public List<Shortcut> getShortcuts(){
+        return mShortcuts;
+    }
 
-        Heap<Shortcut> favourites = new Heap<>(Heap.Type.GREATER);
-
-        for(int i=0; i<mShortcutHeap.getSize(); i++) {
-            if(mShortcutHeap.get(i).isFavourite()) {
-                favourites.add(mShortcutHeap.get(i));
+    public Shortcut getShortcut(UUID id){
+        for(Shortcut shortcut: mShortcuts){
+            if(shortcut.getId().equals(id)){
+                return shortcut;
             }
         }
-
-        return favourites;
+        return null;
     }
 }

@@ -86,6 +86,10 @@ public class Shortcut implements Comparable<Shortcut> {
         return description;
     }
 
+    public void setFavourite(boolean favourite) {
+        this.favourite = favourite;
+    }
+
     public boolean isFavourite() {
         return favourite;
     }
