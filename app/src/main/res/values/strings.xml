@@ -10,4 +10,7 @@
     <string name="shortcut_favourite_label">Favourite</string>
     <string name="add_shortcut_text">Add</string>
     <string name="shortcut_details">Shortcut Details</string>
+    <string name="list_item_shortcut_title">Shortcut Title</string>
+    <string name="list_item_shortcut_description">Shortcut Description</string>
+
 </resources>
