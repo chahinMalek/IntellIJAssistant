@@ -9,4 +9,5 @@
     <string name="shortcut_description_hint">Enter description here</string>
     <string name="shortcut_favourite_label">Favourite</string>
     <string name="add_shortcut_text">Add</string>
+    <string name="shortcut_details">Shortcut Details</string>
 </resources>
