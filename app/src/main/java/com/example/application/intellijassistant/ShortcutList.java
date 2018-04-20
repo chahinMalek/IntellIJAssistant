@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.example.application.intellijassistant.Shortcut.Category;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -18,21 +17,14 @@ import java.util.UUID;
 
 public class ShortcutList {
 
-    private static String fileName = "com.example.application.intellijassistant.shortcuts";
+    private static String fileName = "shortcuts";
     private static ShortcutList sShortcutList;
-    private static File file = new File(fileName);
 
     private List<Shortcut> mShortcuts;
 
     private ShortcutList(Context context) throws IOException, ClassNotFoundException {
 
-        if(file.exists()) {
-            mShortcuts = readShortcuts(context);
-
-        } else {
-            file.createNewFile();
-            mShortcuts = new ArrayList<>();
-        }
+        mShortcuts = readShortcuts(context);
     }
 
     public static ShortcutList get(Context context) {
@@ -42,6 +34,9 @@ public class ShortcutList {
                 sShortcutList = new ShortcutList(context);
 
             } catch (IOException | ClassNotFoundException e) {
+                // File in raw folder will be filled with predefined objects of type Shortcut
+                // The data from that file should be copied into the internal memory
+                // TODO Create shortcuts by category and copy them from shortcuts.txt into phone's internal memory
                 e.printStackTrace();
             }
         }
