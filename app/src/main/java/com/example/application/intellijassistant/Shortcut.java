@@ -2,6 +2,7 @@ package com.example.application.intellijassistant;
 
 import android.support.annotation.Nullable;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
@@ -10,7 +11,7 @@ import java.util.UUID;
  * Time: 8:41 PM
  */
 
-public class Shortcut implements Comparable<Shortcut> {
+public class Shortcut implements Comparable<Shortcut>, Serializable {
 
     enum Category {
         EDITING, SEARCH, USAGE_SEARCH, COMPILE_RUN, DEBUGGING, NAVIGATION, REFACTORING,

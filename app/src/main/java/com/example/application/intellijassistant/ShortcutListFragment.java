@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,7 @@ public class ShortcutListFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_shortcut_list, container, false);
-        mShortcutRecyclerView = (RecyclerView) view.findViewById(R.id.shortcut_recycler_view);
+        mShortcutRecyclerView = view.findViewById(R.id.shortcut_recycler_view);
         mShortcutRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         updateUI();
@@ -35,7 +36,7 @@ public class ShortcutListFragment extends Fragment {
         mShortcutRecyclerView.setAdapter(mAdapter);
     }
 
-    private class ShortcutHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private class ShortcutHolder extends ViewHolder implements View.OnClickListener {
         private Shortcut mShortcut;
         private TextView mShortcutTitle;
         private TextView mShortcutDescription;
@@ -64,10 +65,10 @@ public class ShortcutListFragment extends Fragment {
     }
 
     private class ShortcutAdapter extends RecyclerView.Adapter<ShortcutHolder>{
-        private List<Shortcut> mShortcutHeap;
+        private List<Shortcut> mShortcutList;
 
-        public ShortcutAdapter(List<Shortcut> shortcutHeap){
-            mShortcutHeap = shortcutHeap;
+        public ShortcutAdapter(List<Shortcut> shortcutList){
+            mShortcutList = shortcutList;
         }
 
         @Override
@@ -79,13 +80,13 @@ public class ShortcutListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ShortcutHolder holder, int position) {
-            Shortcut shortcut = mShortcutHeap.get(position);
+            Shortcut shortcut = mShortcutList.get(position);
             holder.bind(shortcut);
         }
 
         @Override
         public int getItemCount() {
-            return mShortcutHeap.size();
+            return mShortcutList.size();
         }
     }
 }

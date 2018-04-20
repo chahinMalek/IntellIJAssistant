@@ -3,8 +3,11 @@ package com.example.application.intellijassistant;
 import android.content.Context;
 
 import com.example.application.intellijassistant.Shortcut.Category;
-import com.example.application.intellijassistant.Shortcut.ShortcutBuilder;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -15,36 +18,53 @@ import java.util.UUID;
 
 public class ShortcutList {
 
+    private static String fileName = "com.example.application.intellijassistant.shortcuts";
     private static ShortcutList sShortcutList;
+    private static File file = new File(fileName);
 
     private List<Shortcut> mShortcuts;
-    private ShortcutBuilder mShortcutBuilder;
 
-    private ShortcutList(Context context){
-        mShortcuts = new ArrayList<>();
-        mShortcutBuilder = new ShortcutBuilder();
+    private ShortcutList(Context context) throws IOException, ClassNotFoundException {
 
-        for(int i = 1; i <= 100; i++){
-            mShortcuts.add(mShortcutBuilder.shortcut("Shortcut #" + i)
-                    .description("Description #" + i)
-                    .favourite(i % 2 == 0)
-                    .getShortcut());
+        if(file.exists()) {
+            mShortcuts = readShortcuts(context);
+
+        } else {
+            file.createNewFile();
+            mShortcuts = new ArrayList<>();
         }
     }
 
-    public static ShortcutList get(Context context){
+    public static ShortcutList get(Context context) {
 
         if (sShortcutList == null) {
-            sShortcutList = new ShortcutList(context);
+            try {
+                sShortcutList = new ShortcutList(context);
+
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
         }
         return sShortcutList;
+    }
+
+    public void storeShortcuts(Context context) throws IOException {
+
+        if(mShortcuts == null) {
+            throw new IllegalArgumentException("Error loading parameter");
+        }
+
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(context.openFileOutput(fileName, Context.MODE_PRIVATE));
+        objectOutputStream.writeObject(mShortcuts);
+        objectOutputStream.close();
     }
 
     public List<Shortcut> getShortcuts(){
         return mShortcuts;
     }
 
-    public Shortcut getShortcut(UUID id){
+    public Shortcut getShortcut(UUID id) {
+
         for(Shortcut shortcut: mShortcuts){
             if(shortcut.getId().equals(id)){
                 return shortcut;
@@ -54,6 +74,7 @@ public class ShortcutList {
     }
 
     public List<Shortcut> getShortcutsByCategory(Category category) {
+
         ArrayList<Shortcut> shortcutsByCategory = new ArrayList<>();
 
         for(Shortcut s : mShortcuts) {
@@ -66,6 +87,10 @@ public class ShortcutList {
 
     public int raiseShortcut (int index) {
 
+        if(index < 0 || index >= mShortcuts.size()) {
+            throw new IndexOutOfBoundsException();
+        }
+
         int temp = index-1;
         while(index > 0 && !mShortcuts.get(temp).isFavourite()) {
             swap(temp--, index--);
@@ -75,6 +100,10 @@ public class ShortcutList {
 
     public int sinkShortcut (int index) {
 
+        if(index < 0 || index >= mShortcuts.size()) {
+            throw new IndexOutOfBoundsException();
+        }
+
         int temp = index+1;
         while(temp < mShortcuts.size() && mShortcuts.get(temp).isFavourite()) {
             swap(temp++, index++);
@@ -82,9 +111,20 @@ public class ShortcutList {
         return index;
     }
 
+    private List<Shortcut> readShortcuts(Context context) throws IOException, ClassNotFoundException {
+
+        ObjectInputStream objectInputStream = new ObjectInputStream(context.openFileInput(fileName));
+        List<Shortcut> data = (List<Shortcut>) objectInputStream.readObject();
+        objectInputStream.close();
+
+        return data;
+    }
+
     private void swap(int i, int j) {
+
         Shortcut s = mShortcuts.get(i);
         mShortcuts.set(i, mShortcuts.get(j));
         mShortcuts.set(j, s);
     }
+
 }
