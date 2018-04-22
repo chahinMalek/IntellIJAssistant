@@ -5,6 +5,7 @@ import android.content.Context;
 import com.example.application.intellijassistant.Shortcut.Category;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -34,7 +35,6 @@ public class ShortcutList {
                 sShortcutList = new ShortcutList(context);
 
             } catch (IOException | ClassNotFoundException e) {
-                // File in raw folder will be filled with predefined objects of type Shortcut
                 // The data from that file should be copied into the internal memory
                 // TODO Create shortcuts by category and copy them from shortcuts.txt into phone's internal memory
                 e.printStackTrace();
@@ -106,10 +106,11 @@ public class ShortcutList {
         return index;
     }
 
-    private List<Shortcut> readShortcuts(Context context) throws IOException, ClassNotFoundException {
+    private ArrayList<Shortcut> readShortcuts(Context context) throws IOException, ClassNotFoundException {
 
-        ObjectInputStream objectInputStream = new ObjectInputStream(context.openFileInput(fileName));
-        List<Shortcut> data = (List<Shortcut>) objectInputStream.readObject();
+        InputStream in = context.getAssets().open("shortcuts.txt");
+        ObjectInputStream objectInputStream = new ObjectInputStream(in);
+        ArrayList<Shortcut> data = (ArrayList<Shortcut>) objectInputStream.readObject();
         objectInputStream.close();
 
         return data;

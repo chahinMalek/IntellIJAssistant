@@ -1,7 +1,5 @@
 package com.example.application.intellijassistant;
 
-import android.support.annotation.Nullable;
-
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -18,12 +16,10 @@ public class Shortcut implements Comparable<Shortcut>, Serializable {
         VERSION_CONTROL, LIVE_TEMPLATES, GENERAL, OTHER
     }
 
-    @Nullable
-    private String description;
-
     private UUID id;
     private String shortcut;
     private boolean favourite;
+    private String description;
     private Category category;
 
     static class ShortcutBuilder {
@@ -67,7 +63,7 @@ public class Shortcut implements Comparable<Shortcut>, Serializable {
         }
     }
 
-    private Shortcut(String shortcut, @Nullable String description, boolean favourite, Category category) {
+    private Shortcut(String shortcut, String description, boolean favourite, Category category) {
         this.id = UUID.randomUUID();
         this.shortcut = shortcut;
         this.description = description;
