@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 
 public class ShortcutActivity extends AppCompatActivity {
 
+    private static final String EXTRA_SHORTCUT = "com.example.application.intellijassistant.extra_shortcut";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,8 +25,9 @@ public class ShortcutActivity extends AppCompatActivity {
         }
     }
 
-    public static Intent newIntent(Context context) {
+    public static Intent newIntent(Context context, Shortcut shortcut) {
         Intent intent = new Intent(context, ShortcutActivity.class);
+        intent.putExtra(EXTRA_SHORTCUT, shortcut);
         return intent;
     }
 }

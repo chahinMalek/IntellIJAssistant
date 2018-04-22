@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/shortcut_description_hint"
         android:inputType="textMultiLine"
-        android:maxLines="7"
+        android:maxLines="2"
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryDark"
         android:textColorHighlight="@color/colorPrimaryDark"

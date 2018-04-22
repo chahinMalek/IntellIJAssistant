@@ -12,5 +12,9 @@
     <string name="shortcut_details">Shortcut Details</string>
     <string name="list_item_shortcut_title">Shortcut Title</string>
     <string name="list_item_shortcut_description">Shortcut Description</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="new_shortcut">New Shortcut</string>
 
 </resources>

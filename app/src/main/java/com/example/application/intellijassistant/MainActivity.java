@@ -1,6 +1,5 @@
 package com.example.application.intellijassistant;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -49,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
                     .setAction("Action", null).show();
 
 
-            Intent intent = ShortcutActivity.newIntent(MainActivity.this);
-            startActivity(intent);
+//            Intent intent = ShortcutActivity.newIntent(MainActivity.this);
+//            startActivity(intent);
         });
     }
 
