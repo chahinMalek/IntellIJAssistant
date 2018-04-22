@@ -17,4 +17,18 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="new_shortcut">New Shortcut</string>
 
+    <string-array name="categories">
+        <item>Editing</item>
+        <item>Search</item>
+        <item>Usage/Search</item>
+        <item>Compile/Run</item>
+        <item>Debugging</item>
+        <item>Navigation</item>
+        <item>Refactoring</item>
+        <item>Version Control</item>
+        <item>Live Templates</item>
+        <item>General</item>
+        <item>Other</item>
+    </string-array>
+
 </resources>

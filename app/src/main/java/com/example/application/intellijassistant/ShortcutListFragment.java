@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -50,6 +49,7 @@ public class ShortcutListFragment extends Fragment {
         mShortcutRecyclerView.setAdapter(mAdapter);
     }
 
+    /*************************************** TOOLBAR METHODS **************************************/
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -61,13 +61,14 @@ public class ShortcutListFragment extends Fragment {
 
         if(item.getItemId() == R.id.menu_new_shortcut) {
             Shortcut shortcut = null;
-            Intent intent = ShortcutActivity.newIntent(getContext(), shortcut);
+            Intent intent = ShortcutActivity.newAddShortcutIntent(getContext(), shortcut);
             startActivityForResult(intent, REQUEST_CODE_NEW_SHORTCUT);
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    /*************************************** SHORTCUT HOLDER **************************************/
     private class ShortcutHolder extends ViewHolder implements View.OnClickListener {
         private Shortcut mShortcut;
         private TextView mShortcutTitle;
@@ -92,10 +93,12 @@ public class ShortcutListFragment extends Fragment {
         
         @Override
         public void onClick(View view) {
-            Toast.makeText(getActivity(), mShortcut.getShortcut() + " clicked!", Toast.LENGTH_SHORT).show();
+            Intent intent = ShortcutActivity.newPreviewShortcutIntent(getActivity(), mShortcut.getId());
+            startActivity(intent);
         }
     }
 
+    /************************************** SHORTCUT ADAPTER **************************************/
     private class ShortcutAdapter extends RecyclerView.Adapter<ShortcutHolder>{
         private List<Shortcut> mShortcutList;
 

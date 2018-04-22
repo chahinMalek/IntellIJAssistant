@@ -7,10 +7,11 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.Spinner;
 
 import com.example.application.intellijassistant.Shortcut.ShortcutBuilder;
 
@@ -61,6 +62,7 @@ public class ShortcutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_shortcut, container, false);
 
+        /************************************* SHORTCUT TITLE *************************************/
         mShortcutTitle = v.findViewById(R.id.shortcut_title);
 
         if(mShortcut != null) {
@@ -85,6 +87,7 @@ public class ShortcutFragment extends Fragment {
             }
         });
 
+        /********************************** SHORTCUT DESCRIPTION **********************************/
         mShortcutDescription = v.findViewById(R.id.shortcut_description);
 
         if(mShortcut != null) {
@@ -106,19 +109,76 @@ public class ShortcutFragment extends Fragment {
             }
         });
 
+        /*********************************** SHORTCUT CHECKBOX ************************************/
         mShortcutFavouriteCheckBox = v.findViewById(R.id.shortcut_favourite);
 
         if(mShortcut != null) {
             mShortcutFavouriteCheckBox.setChecked(mShortcut.isFavourite());
         }
 
-        mShortcutFavouriteCheckBox.setOnCheckedChangeListener((buttonView, isChecked) ->
-                mShortcutBuilder.favourite(isChecked));
+        mShortcutFavouriteCheckBox.setOnCheckedChangeListener( (buttonView, isChecked) -> {
+            mShortcutBuilder.favourite(isChecked);
+        });
 
+        /************************************ SHORTCUT SPINNER ************************************/
+        Spinner mCategorySpinner = v.findViewById(R.id.category_spinner);
+
+        ArrayAdapter<String> categoryArrayAdapter = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_list_item_1,
+                getResources().getStringArray(R.array.categories));
+
+        categoryArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        mCategorySpinner.setAdapter(categoryArrayAdapter);
+
+
+        /************************************** SHORTCUT ADD **************************************/
         mAddButton = v.findViewById(R.id.add_shortcut_button);
         mAddButton.setOnClickListener( view -> {
-            Toast.makeText(getContext(), "Button clicked!", Toast.LENGTH_LONG).show();
-            /* TODO save the newly created shortcut AND return to the activity that called the activity that hosts this fragment */
+
+            try {
+
+                String category = mCategorySpinner.getSelectedItem().toString();
+
+                switch (category) {
+                    case "Editing":
+                        mShortcutBuilder.category(Shortcut.Category.EDITING);
+                        break;
+                    case "Search":
+                        mShortcutBuilder.category(Shortcut.Category.SEARCH);
+                        break;
+                    case "Usage/Search":
+                        mShortcutBuilder.category(Shortcut.Category.USAGE_SEARCH);
+                        break;
+                    case "Compile/Run":
+                        mShortcutBuilder.category(Shortcut.Category.COMPILE_RUN);
+                        break;
+                    case "Debugging":
+                        mShortcutBuilder.category(Shortcut.Category.DEBUGGING);
+                        break;
+                    case "Navigation":
+                        mShortcutBuilder.category(Shortcut.Category.NAVIGATION);
+                        break;
+                    case "Version Control":
+                        mShortcutBuilder.category(Shortcut.Category.VERSION_CONTROL);
+                        break;
+                    case "Live Templates":
+                        mShortcutBuilder.category(Shortcut.Category.LIVE_TEMPLATES);
+                        break;
+                    case "General":
+                        mShortcutBuilder.category(Shortcut.Category.GENERAL);
+                        break;
+                    case "Other":
+                        mShortcutBuilder.category(Shortcut.Category.OTHER);
+                        break;
+                }
+
+                mShortcut = mShortcutBuilder.getShortcut();
+
+            } catch(IllegalStateException e) {
+                /* TODO save the newly created shortcut AND return to the activity that called the activity that hosts this fragment */
+            }
+
             getActivity().finish();
         });
 

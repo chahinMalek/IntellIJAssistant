@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                     .setAction("Action", null).show();
 
 
-//            Intent intent = ShortcutActivity.newIntent(MainActivity.this);
+//            Intent intent = ShortcutActivity.newAddShortcutIntent(MainActivity.this);
 //            startActivity(intent);
         });
     }
