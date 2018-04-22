@@ -57,6 +57,10 @@ public class ShortcutList {
         return sShortcutList;
     }
 
+    public void addShortcut(Shortcut s) {
+        mShortcuts.add(s);
+    }
+
     public void storeShortcuts(Context context) throws IOException {
 
         if(mShortcuts == null) {

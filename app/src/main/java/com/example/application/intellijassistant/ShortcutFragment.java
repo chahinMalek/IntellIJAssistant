@@ -1,5 +1,7 @@
 package com.example.application.intellijassistant;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -12,6 +14,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.application.intellijassistant.Shortcut.ShortcutBuilder;
 
@@ -22,6 +25,7 @@ import com.example.application.intellijassistant.Shortcut.ShortcutBuilder;
 public class ShortcutFragment extends Fragment {
 
     private static final String SHORTCUT_FRAGMENT = "com.example.application.intellijassistant.shortcut_fragment";
+    private static final String NEW_SHORTCUT = "com.example.application.intellijassistant.new_shortcut";
 
     private ShortcutBuilder mShortcutBuilder;
     private Shortcut mShortcut;
@@ -174,12 +178,13 @@ public class ShortcutFragment extends Fragment {
                 }
 
                 mShortcut = mShortcutBuilder.getShortcut();
+                returnResult();
+                getActivity().finish();
 
             } catch(IllegalStateException e) {
-                /* TODO save the newly created shortcut AND return to the activity that called the activity that hosts this fragment */
+                Toast.makeText(getContext(), "Shortcut Title must be specified!", Toast.LENGTH_LONG).show();
             }
 
-            getActivity().finish();
         });
 
         return v;
@@ -196,5 +201,26 @@ public class ShortcutFragment extends Fragment {
         } catch(IllegalStateException e) {
             // Serves only to not crash the app
         }
+    }
+
+    // Used to create preview fragment containing data from a shortcut object with shortcutId
+    public static Fragment newInstance(Shortcut shortcut) {
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(NEW_SHORTCUT, shortcut);
+
+        ShortcutFragment shortcutFragment = new ShortcutFragment();
+        shortcutFragment.setArguments(bundle);
+        return shortcutFragment;
+    }
+
+    public void returnResult() {
+        Intent intent = new Intent();
+        intent.putExtra(NEW_SHORTCUT, mShortcut);
+        getActivity().setResult(Activity.RESULT_OK, intent);
+    }
+
+    public static Shortcut getResult(Intent data) {
+        return (Shortcut) data.getSerializableExtra(NEW_SHORTCUT);
     }
 }

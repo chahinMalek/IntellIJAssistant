@@ -14,7 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -29,6 +31,12 @@ public class ShortcutListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
     }
 
     @Override
@@ -49,6 +57,31 @@ public class ShortcutListFragment extends Fragment {
         mShortcutRecyclerView.setAdapter(mAdapter);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_CODE_NEW_SHORTCUT) {
+            if(data != null) {
+                ShortcutList shortcutList = ShortcutList.get(getActivity());
+                shortcutList.addShortcut(ShortcutFragment.getResult(data));
+
+                Toast.makeText(getActivity(), "Shortcut successfully added!", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        try {
+            ShortcutList shortcutList = ShortcutList.get(getContext());
+            shortcutList.storeShortcuts(getContext());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /*************************************** TOOLBAR METHODS **************************************/
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -63,6 +96,7 @@ public class ShortcutListFragment extends Fragment {
             Shortcut shortcut = null;
             Intent intent = ShortcutActivity.newAddShortcutIntent(getContext(), shortcut);
             startActivityForResult(intent, REQUEST_CODE_NEW_SHORTCUT);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

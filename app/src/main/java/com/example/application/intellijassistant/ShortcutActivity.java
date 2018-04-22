@@ -5,10 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 
 import java.util.UUID;
 
-public class ShortcutActivity extends SingleFragmentActivity {
+public class ShortcutActivity extends AppCompatActivity {
 
     private static final String EXTRA_SHORTCUT = "com.example.application.intellijassistant.extra_shortcut";
     private static final String SHORTCUT_ID = "com.example.application.intellijassistant.shortcut_id";
@@ -22,7 +23,6 @@ public class ShortcutActivity extends SingleFragmentActivity {
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
 
         if(fragment == null) {
-
             fragment = createFragment();
             fm.beginTransaction().add(R.id.fragment_container, fragment).commit();
         }
@@ -40,15 +40,16 @@ public class ShortcutActivity extends SingleFragmentActivity {
         return intent;
     }
 
-    @Override
-    protected Fragment createFragment() {
+    private Fragment createFragment() {
 
-        UUID shortcutId;
-        if((shortcutId = (UUID) getIntent().getSerializableExtra(SHORTCUT_ID)) == null) {
-            return new ShortcutFragment();
+        UUID shortcutId = (UUID) getIntent().getSerializableExtra(SHORTCUT_ID);
+        Shortcut shortcut = (Shortcut) getIntent().getSerializableExtra(EXTRA_SHORTCUT);
+
+        if(shortcutId != null) {
+            return PreviewShortcutFragment.newInstance(shortcutId);
 
         } else {
-            return PreviewShortcutFragment.newInstance(shortcutId);
+            return ShortcutFragment.newInstance(shortcut);
         }
     }
 }
