@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.example.application.intellijassistant.Shortcut.Category;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -18,14 +20,28 @@ import java.util.UUID;
 
 public class ShortcutList {
 
-    private static String fileName = "shortcuts";
+    private static String fileName = "mShortcuts";
     private static ShortcutList sShortcutList;
-
     private List<Shortcut> mShortcuts;
 
     private ShortcutList(Context context) throws IOException, ClassNotFoundException {
 
-        mShortcuts = readShortcuts(context);
+        try (FileInputStream in = context.openFileInput(fileName)) {
+
+            // If file exists read serialized ArrayList<Shortcut> from that file instead of embed shortcuts.txt file
+            ObjectInputStream objectInputStream = new ObjectInputStream(in);
+            mShortcuts = (ArrayList<Shortcut>) objectInputStream.readObject();
+
+        } catch (FileNotFoundException e) {
+
+            // Read shortcuts from embed shortcuts.txt file
+            mShortcuts = readShortcuts(context);
+
+            // Create a file in device's internal memory
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(context.openFileOutput(fileName, Context.MODE_PRIVATE));
+            objectOutputStream.writeObject(mShortcuts);
+            objectOutputStream.close();
+        }
     }
 
     public static ShortcutList get(Context context) {
@@ -35,8 +51,6 @@ public class ShortcutList {
                 sShortcutList = new ShortcutList(context);
 
             } catch (IOException | ClassNotFoundException e) {
-                // The data from that file should be copied into the internal memory
-                // TODO Create shortcuts by category and copy them from shortcuts.txt into phone's internal memory
                 e.printStackTrace();
             }
         }
@@ -49,6 +63,7 @@ public class ShortcutList {
             throw new IllegalArgumentException("Error loading parameter");
         }
 
+        // Storing objects into phone's internal memory i MODE_PRIVATE. This way only our app can access this file
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(context.openFileOutput(fileName, Context.MODE_PRIVATE));
         objectOutputStream.writeObject(mShortcuts);
         objectOutputStream.close();
