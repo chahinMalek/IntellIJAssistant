@@ -57,6 +57,16 @@ public class ShortcutList {
         return sShortcutList;
     }
 
+    public int getShortcutIndex(UUID id) {
+
+        for(int i = 0; i < mShortcuts.size(); i++){
+            if(mShortcuts.get(i).getId().equals(id))
+                return i;
+        }
+
+        return -1;
+    }
+
     public void addShortcut(Shortcut s) {
         mShortcuts.add(s);
     }

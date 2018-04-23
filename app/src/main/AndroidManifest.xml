@@ -9,17 +9,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" />
         <activity android:name=".ShortcutActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ShortcutListActivity">
+        <activity android:name=".ShortcutListActivity"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ShortcutPagerActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
