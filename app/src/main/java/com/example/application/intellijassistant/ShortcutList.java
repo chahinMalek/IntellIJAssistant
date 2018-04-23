@@ -74,7 +74,7 @@ public class ShortcutList {
     public void storeShortcuts(Context context) throws IOException {
 
         if(mShortcuts == null) {
-            throw new IllegalArgumentException("Error loading parameter");
+            throw new IllegalStateException("Error loading parameter");
         }
 
         // Storing objects into phone's internal memory i MODE_PRIVATE. This way only our app can access this file

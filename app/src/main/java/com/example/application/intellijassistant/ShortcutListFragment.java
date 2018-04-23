@@ -54,10 +54,10 @@ public class ShortcutListFragment extends Fragment {
 
     private void updateUI(){
         ShortcutList shortcutList = ShortcutList.get(getActivity());
-        List<Shortcut> shortcutHeap = shortcutList.getShortcuts();
+        List<Shortcut> shortcuts = shortcutList.getShortcuts();
 
         if(mAdapter == null) {
-            mAdapter = new ShortcutAdapter(shortcutHeap);
+            mAdapter = new ShortcutAdapter(shortcuts);
             mShortcutRecyclerView.setAdapter(mAdapter);
         } else {
             if(!onBind){
@@ -67,7 +67,7 @@ public class ShortcutListFragment extends Fragment {
     }
 
     protected void updateUI(UUID shortcutId, boolean isChecked){
-//        Toast.makeText(getActivity(), "Ovo je poruka, pozivamo", Toast.LENGTH_SHORT).show();
+
         ShortcutList shortcutList = ShortcutList.get(getActivity());
 
         // Raising and sinking shortcuts
@@ -77,22 +77,9 @@ public class ShortcutListFragment extends Fragment {
             shortcutList.sinkShortcut(shortcutList.getShortcutIndex(shortcutId));
         }
 
-        List<Shortcut> shortcutHeap = shortcutList.getShortcuts();
-
         if(!onBind){
             mAdapter.notifyDataSetChanged();
         }
-//        try{
-//            if(mAdapter == null) {
-//                mAdapter = new ShortcutAdapter(shortcutHeap);
-//                mShortcutRecyclerView.setAdapter(mAdapter);
-//            } else {
-//                mAdapter.notifyDataSetChanged();
-//                Toast.makeText(getContext(), "blah", Toast.LENGTH_LONG).show();
-//            }
-//        } catch(Exception e){
-//            System.out.println(e);
-//        }
     }
 
     @Override
@@ -160,12 +147,13 @@ public class ShortcutListFragment extends Fragment {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     mShortcut.setFavourite(isChecked);
-                        updateUI(mShortcut.getId(), isChecked);
+                    updateUI(mShortcut.getId(), isChecked);
                 }
             });
         }
         
         public void bind(Shortcut shortcut){
+
             mShortcut = shortcut;
             mShortcutTitle.setText(shortcut.getShortcut());
             mShortcutDescription.setText(shortcut.getDescription());
@@ -175,7 +163,7 @@ public class ShortcutListFragment extends Fragment {
         
         @Override
         public void onClick(View view) {
-//            Intent intent = ShortcutActivity.newPreviewShortcutIntent(getActivity(), mShortcut.getId());
+
             Intent intent = ShortcutPagerActivity.newIntent(getActivity(), mShortcut.getId());
             startActivity(intent);
         }

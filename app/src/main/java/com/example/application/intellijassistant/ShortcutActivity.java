@@ -7,8 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
-import java.util.UUID;
-
 public class ShortcutActivity extends AppCompatActivity {
 
     private static final String EXTRA_SHORTCUT = "com.example.application.intellijassistant.extra_shortcut";
@@ -34,22 +32,9 @@ public class ShortcutActivity extends AppCompatActivity {
         return intent;
     }
 
-    public static Intent newPreviewShortcutIntent(Context context, UUID shortcutId) {
-        Intent intent = new Intent(context, ShortcutActivity.class);
-        intent.putExtra(SHORTCUT_ID, shortcutId);
-        return intent;
-    }
-
     private Fragment createFragment() {
 
-        UUID shortcutId = (UUID) getIntent().getSerializableExtra(SHORTCUT_ID);
         Shortcut shortcut = (Shortcut) getIntent().getSerializableExtra(EXTRA_SHORTCUT);
-
-        if(shortcutId != null) {
-            return PreviewShortcutFragment.newInstance(shortcutId);
-
-        } else {
-            return ShortcutFragment.newInstance(shortcut);
-        }
+        return ShortcutFragment.newInstance(shortcut);
     }
 }
