@@ -93,7 +93,8 @@ public class ShortcutListFragment extends Fragment {
         
         @Override
         public void onClick(View view) {
-            Intent intent = ShortcutActivity.newPreviewShortcutIntent(getActivity(), mShortcut.getId());
+            //Intent intent = ShortcutActivity.newPreviewShortcutIntent(getActivity(), mShortcut.getId());
+            Intent intent = ShortcutPagerActivity.newIntent(getActivity(), mShortcut.getId());
             startActivity(intent);
         }
     }

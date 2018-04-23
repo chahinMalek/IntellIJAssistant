@@ -22,6 +22,7 @@ import com.example.application.intellijassistant.Shortcut.ShortcutBuilder;
 public class ShortcutFragment extends Fragment {
 
     private static final String SHORTCUT_FRAGMENT = "com.example.application.intellijassistant.shortcut_fragment";
+    private static final String ARG_SHORTCUT_ID = "shortcut_id";
 
     private ShortcutBuilder mShortcutBuilder;
     private Shortcut mShortcut;
@@ -197,4 +198,6 @@ public class ShortcutFragment extends Fragment {
             // Serves only to not crash the app
         }
     }
+
+
 }
