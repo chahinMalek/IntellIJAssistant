@@ -5,10 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 
 import java.util.UUID;
 
-public class ShortcutActivity extends SingleFragmentActivity {
+public class ShortcutActivity extends AppCompatActivity {
 
     private static final String EXTRA_SHORTCUT = "com.example.application.intellijassistant.extra_shortcut";
     private static final String SHORTCUT_ID = "com.example.application.intellijassistant.shortcut_id";
@@ -40,8 +41,7 @@ public class ShortcutActivity extends SingleFragmentActivity {
         return intent;
     }
 
-    @Override
-    protected Fragment createFragment() {
+    public Fragment createFragment() {
 
         UUID shortcutId;
         if((shortcutId = (UUID) getIntent().getSerializableExtra(SHORTCUT_ID)) == null) {

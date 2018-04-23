@@ -13,9 +13,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.UUID;
 
 
 public class ShortcutListFragment extends Fragment {
@@ -45,8 +47,40 @@ public class ShortcutListFragment extends Fragment {
         ShortcutList shortcutList = ShortcutList.get(getActivity());
         List<Shortcut> shortcutHeap = shortcutList.getShortcuts();
 
-        mAdapter = new ShortcutAdapter(shortcutHeap);
-        mShortcutRecyclerView.setAdapter(mAdapter);
+        if(mAdapter == null) {
+            mAdapter = new ShortcutAdapter(shortcutHeap);
+            mShortcutRecyclerView.setAdapter(mAdapter);
+        } else {
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    protected void updateUI(UUID shortcutId, boolean isChecked){
+//        Toast.makeText(getActivity(), "Ovo je poruka, pozivamo", Toast.LENGTH_SHORT).show();
+        ShortcutList shortcutList = ShortcutList.get(getActivity());
+
+            // Raising and sinking shortcuts
+        if(isChecked){
+            shortcutList.raiseShortcut(shortcutList.getShortcutIndex(shortcutId));
+        } else {
+            shortcutList.sinkShortcut(shortcutList.getShortcutIndex(shortcutId));
+        }
+
+        List<Shortcut> shortcutHeap = shortcutList.getShortcuts();
+//        mAdapter.notifyDataSetChanged();
+//        mAdapter = new ShortcutAdapter(shortcutHeap);
+//        mShortcutRecyclerView.setAdapter(mAdapter);
+//
+        try{
+            if(mAdapter == null) {
+                mAdapter = new ShortcutAdapter(shortcutHeap);
+                mShortcutRecyclerView.setAdapter(mAdapter);
+            } else {
+                mAdapter.notifyDataSetChanged();
+            }
+        } catch(Exception e){
+            System.out.println(e);
+        }
     }
 
     /*************************************** TOOLBAR METHODS **************************************/
@@ -82,6 +116,17 @@ public class ShortcutListFragment extends Fragment {
             mShortcutTitle = itemView.findViewById(R.id.list_item_shortcut_title);
             mShortcutDescription = itemView.findViewById(R.id.list_item_shortcut_description);
             mFavouriteCheckBox = itemView.findViewById(R.id.favourite_check_box);
+
+            mFavouriteCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    mShortcut.setFavourite(isChecked);
+                    updateUI(mShortcut.getId(), isChecked);
+//                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//                    ShortcutListFragment fragment = (ShortcutListFragment) fragmentManager.findFragmentById(R.id.fragment_container);
+//                    fragment.updateUI(mShortcut.getId(), isChecked);
+                }
+            });
         }
         
         public void bind(Shortcut shortcut){

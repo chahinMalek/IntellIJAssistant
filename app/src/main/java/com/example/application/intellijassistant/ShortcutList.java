@@ -83,6 +83,16 @@ public class ShortcutList {
         return null;
     }
 
+    public int getShortcutIndex(UUID id) {
+
+        for(int i = 0; i < mShortcuts.size(); i++){
+            if(mShortcuts.get(i).getId().equals(id))
+                return i;
+        }
+
+        return -1;
+    }
+
     public List<Shortcut> getShortcutsByCategory(Category category) {
 
         ArrayList<Shortcut> shortcutsByCategory = new ArrayList<>();
